@@ -12,3 +12,14 @@ variable "environment" {
   type        = string
   description = "Environment to deploy the infrastructure"
 }
+
+variable api_gateway_id {
+  type        = string
+  description = "API Gateway ID"
+}
+
+variable api_gateway_region {
+  type        = string
+  description = "Region where API Gateway was deployed"
+  default = "sa-east-1"
+}
