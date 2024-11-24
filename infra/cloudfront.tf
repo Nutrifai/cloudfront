@@ -76,6 +76,34 @@ resource "aws_cloudfront_distribution" "distribution" {
     default_ttl            = 0
     max_ttl                = 0
   }
+
+  origin {
+    domain_name              = "${var.profile_pic_bucket_name}.s3.sa-east-1.amazonaws.com"
+    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
+    origin_id                = var.profile_pic_bucket_name
+    origin_path              = ""
+  }
+
+  ordered_cache_behavior {
+    path_pattern = "/user-profile-pic/*"
+    
+    allowed_methods  = ["HEAD", "GET", "OPTIONS"]
+    cached_methods = ["HEAD", "GET", "OPTIONS"]
+    target_origin_id = var.profile_pic_bucket_name
+
+     forwarded_values {
+      query_string = false
+
+      cookies {
+        forward = "none"
+      }
+    }
+
+    viewer_protocol_policy = "allow-all"
+    min_ttl                = 0
+    default_ttl            = 3600
+    max_ttl                = 86400
+  }
   
   custom_error_response {
     error_code = 403
